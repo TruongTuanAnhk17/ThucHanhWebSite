@@ -1,0 +1,51 @@
+/* Định dạng chung */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #f0f0f0;
+}
+
+h2 {
+  color: #333;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+
+.flag-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+/* Cờ Nhật Bản 🇯🇵 */
+.flag.japan {
+  width: 300px;
+  height: 200px;
+  background: white;
+  border: 3px solid black;
+  position: relative;
+}
+
+.flag.japan .circle {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: red;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Cờ Việt Nam 🇻🇳 */
+.flag.vietnam {
+  width: 300px;
+  height: 200px;
+  background: red;
+  border: 3px solid black;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
