@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh Toán</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .payment-container {
+      max-width: 400px;
+      /* Giới hạn chiều rộng */
+      width: 100%;
+      /* Đảm bảo không bị tràn */
+      margin: auto;
+      /* Căn giữa */
+      padding: 20px;
+      background: white;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    input,
+    button {
+      box-sizing: border-box;
+      /* Tránh bị tràn do padding */
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="payment-container">
+    <h2>Thanh Toán</h2>
+    <form action="/checkout" method="POST">
+      <label for="name">Họ và tên:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="card">Số thẻ:</label>
+      <input type="text" id="card" name="card" placeholder="1234 5678 9012 3456" required>
+
+      <label for="exp">Ngày hết hạn:</label>
+      <input type="month" id="exp" name="exp" required>
+
+      <label for="cvv">CVV:</label>
+      <input type="password" id="cvv" name="cvv" required>
+
+      <button type="submit">Thanh toán</button>
+    </form>
+  </div>
+</body>
+
+</html>
