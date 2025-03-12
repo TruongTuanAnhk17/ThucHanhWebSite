@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokemon Wiki</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container,
+    .pokemon-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-bar input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 60%;
+    }
+
+    .search-bar button {
+      padding: 10px;
+      background-color: #ffcc00;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .pokemon-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      justify-items: center;
+      margin-top: 20px;
+    }
+
+    .pokemon-card {
+      background: white;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .pokemon-card:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .pokemon-card img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .pagination {
+      margin-top: 20px;
+    }
+
+    .pagination button {
+      margin: 5px;
+      padding: 10px;
+      background-color: #ffcc00;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Pokemon Wiki</h2>
+    <div class="search-bar">
+      <input type="text" id="pokemonName" placeholder="Nhập tên Pokemon" oninput="handleSearch()">
+      <button onclick="searchPokemon()">Tìm kiếm</button>
+    </div>
+  </div>
+  <div class="pokemon-container">
+    <h3>Danh sách Pokemon</h3>
+    <div class="pokemon-list" id="pokemonList"></div>
+    <div class="pagination" id="paginationControls">
+      <button onclick="prevPage()">Trước</button>
+      <span id="pageNumber">1</span>
+      <button onclick="nextPage()">Sau</button>
+    </div>
+  </div>
+  <script>
+    let currentPage = 1;
+    const limit = 12;
+    let allPokemon = [];
+    let totalCount = 0;
+
+    async function fetchPokemon(page) {
+      const listDiv = document.getElementById('pokemonList');
+      listDiv.innerHTML = 'Đang tải...';
+      const offset = (page - 1) * limit;
+      const url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Không thể tải danh sách Pokemon!');
+        const data = await response.json();
+        allPokemon = data.results.map(pokemon => ({
+          name: pokemon.name,
+          id: pokemon.url.split('/')[6]
+        }));
+        totalCount = data.count;
+        displayPokemon(allPokemon);
+        document.getElementById('pageNumber').innerText = page;
+        togglePagination();
+      } catch (error) {
+        listDiv.innerHTML = '<p style="color:red">Không thể tải danh sách Pokemon!</p>';
+      }
+    }
+
+    function displayPokemon(pokemonList) {
+      const listDiv = document.getElementById('pokemonList');
+      listDiv.innerHTML = pokemonList.map(pokemon => `
+                <div class="pokemon-card">
+                    <h4>${pokemon.name.toUpperCase()}</h4>
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png" alt="${pokemon.name}">
+                </div>
+            `).join('');
+    }
+
+    async function searchPokemon() {
+      const searchValue = document.getElementById('pokemonName').value.toLowerCase();
+      if (!searchValue) {
+        fetchPokemon(1);
+        return;
+      }
+      const url = `https://pokeapi.co/api/v2/pokemon/${searchValue}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Không tìm thấy Pokemon!');
+        const data = await response.json();
+        displayPokemon([{ name: data.name, id: data.id }]);
+        document.getElementById('paginationControls').style.display = 'none';
+      } catch (error) {
+        document.getElementById('pokemonList').innerHTML = '<p style="color:red">Không tìm thấy Pokemon!</p>';
+      }
+    }
+
+    function handleSearch() {
+      if (document.getElementById('pokemonName').value === '') {
+        fetchPokemon(1);
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        fetchPokemon(currentPage);
+      }
+    }
+
+    function nextPage() {
+      if (currentPage * limit < totalCount) {
+        currentPage++;
+        fetchPokemon(currentPage);
+      }
+    }
+
+    function togglePagination() {
+      const paginationControls = document.getElementById('paginationControls');
+      paginationControls.style.display = totalCount <= limit ? 'none' : 'block';
+    }
+
+    fetchPokemon(currentPage);
+  </script>
+</body>
+
+</html>
