@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học JavaScript Cơ Bản</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    p {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      padding: 8px;
+      width: 60%;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .upper {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .lower {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    #outputText {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>1️⃣ JavaScript Variables (var, let, const)</h2>
+  <p id="variables"></p>
+
+  <h2>2️⃣ Kiểu dữ liệu trong JavaScript</h2>
+  <p id="data-types"></p>
+
+  <h2>3️⃣ Chuyển đổi chữ hoa - chữ thường</h2>
+  <input type="text" id="textInput" placeholder="Nhập văn bản">
+  <br>
+  <button class="upper" onclick="toUpper()">🔼 Chữ Hoa</button>
+  <button class="lower" onclick="toLower()">🔽 Chữ Thường</button>
+  <p id="outputText"></p>
+
+  <script>
+    // 1️⃣ Biến trong JavaScript
+    var oldVar = "Tôi là var (cũ, ít dùng)";
+    let newLet = "Tôi là let (có thể thay đổi)";
+    const fixedConst = "Tôi là const (không thể thay đổi)";
+
+    document.getElementById("variables").innerHTML =
+      `var: ${oldVar} <br> let: ${newLet} <br> const: ${fixedConst}`;
+
+    // 2️⃣ Kiểu dữ liệu trong JavaScript
+    let str = "Xin chào!";
+    let num = 2024;
+    let bool = true;
+    let arr = ["Táo", "Cam", "Xoài"];
+    let obj = { name: "Học sinh", age: 15 };
+
+    document.getElementById("data-types").innerHTML =
+      `Chuỗi: ${str} <br> Số: ${num} <br> Boolean: ${bool} <br> 
+            Mảng: ${arr} <br> Đối tượng: ${JSON.stringify(obj)}`;
+
+    // 3️⃣ Chuyển đổi chữ hoa - chữ thường
+    function toUpper() {
+      let input = document.getElementById("textInput").value;
+      document.getElementById("outputText").innerText = input.toUpperCase();
+    }
+
+    function toLower() {
+      let input = document.getElementById("textInput").value;
+      document.getElementById("outputText").innerText = input.toLowerCase();
+    }
+  </script>
+
+</body>
+
+</html>

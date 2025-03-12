@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Học Sinh</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    form {
+      margin-bottom: 20px;
+    }
+
+    input,
+    button {
+      margin-right: 5px;
+      padding: 5px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 5px;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+
+    .info {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      padding-right: 10px;
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .edit {
+      background: orange;
+      color: white;
+    }
+
+    .delete {
+      background: gray;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>📌 Quản lý Học Sinh</h2>
+  <form onsubmit="return false;">
+    <input type="text" id="name" placeholder="Nhập tên">
+    <input type="number" id="age" placeholder="Nhập tuổi">
+    <button onclick="addStudent()">➕ Thêm</button>
+    <button onclick="updateStudent()" id="editBtn" disabled>✏️ Sửa</button>
+  </form>
+
+  <h2>📋 Danh sách học sinh</h2>
+  <ul id="studentList"></ul>
+
+  <script>
+    let students = [];
+    let editIndex = -1;
+
+    function displayStudents() {
+      let list = document.getElementById("studentList");
+      list.innerHTML = "";
+
+      students.forEach((student, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `
+                    <div class="info">
+                        <strong>${student.name || "Chưa có tên"}</strong> 
+                        <span>${student.age || "?"} tuổi</span>
+                    </div>
+                    <button class="edit" onclick="fillForm(${index})">✏️ Chọn sửa</button>
+                    <button class="delete" onclick="deleteStudent(${index})">🗑️ Xóa</button>
+                `;
+        list.appendChild(li);
+      });
+    }
+
+    function addStudent() {
+      let name = document.getElementById("name").value.trim();
+      let age = document.getElementById("age").value.trim();
+
+      students.push({ name, age });
+      displayStudents();
+      resetForm();
+    }
+
+    function fillForm(index) {
+      document.getElementById("name").value = students[index].name;
+      document.getElementById("age").value = students[index].age;
+      editIndex = index;
+      document.getElementById("editBtn").disabled = false;
+    }
+
+    function updateStudent() {
+      if (editIndex !== -1) {
+        students[editIndex] = {
+          name: document.getElementById("name").value.trim(),
+          age: document.getElementById("age").value.trim()
+        };
+        displayStudents();
+        resetForm();
+      }
+    }
+
+    function deleteStudent(index) {
+      students.splice(index, 1);
+      displayStudents();
+      resetForm();
+    }
+
+    function resetForm() {
+      document.getElementById("name").value = "";
+      document.getElementById("age").value = "";
+      editIndex = -1;
+      document.getElementById("editBtn").disabled = true;
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Học JavaScript Cơ Bản</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 20px;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    input,
+    button {
+      padding: 10px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+
+    p {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body>
+  <h2>1️⃣ Toán tử trong JavaScript</h2>
+  <p id="operators"></p>
+
+  <h2>2️⃣ Câu điều kiện (if-else & switch-case)</h2>
+  <input type="number" id="ageInput" placeholder="Nhập tuổi của bạn">
+  <button onclick="checkAge()">Kiểm tra</button>
+  <p id="ageResult"></p>
+
+  <h2>3️⃣ Vòng lặp (For, While, Do-While)</h2>
+  <button onclick="showLoopResults()">Chạy vòng lặp</button>
+  <p id="loopResults"></p>
+
+  <h2>4️⃣ Danh sách và đối tượng</h2>
+  <p id="arrayObject"></p>
+
+  <script>
+    let a = 10, b = 5;
+    let sum = a + b;
+    let isEqual = (a == b);
+    let isAdult = (a > 18 && b < 20);
+
+    document.getElementById("operators").innerHTML =
+      `10 + 5 = ${sum} <br> 10 == 5? ${isEqual} <br> (10 > 18 && 5 < 20)? ${isAdult}`;
+
+    function checkAge() {
+      let age = document.getElementById("ageInput").value;
+      let message = age >= 18 ? "Bạn đã đủ tuổi trưởng thành." : "Bạn vẫn chưa đủ 18 tuổi.";
+      document.getElementById("ageResult").innerText = message;
+    }
+
+    function showLoopResults() {
+      let result = "🔄 Vòng lặp For: ";
+      for (let i = 1; i <= 5; i++) result += i + " ";
+      result += "<br>🔄 Vòng lặp While: ";
+      let j = 1; while (j <= 5) result += j++ + " ";
+      result += "<br>🔄 Vòng lặp Do-While: ";
+      let k = 1; do { result += k++ + " "; } while (k <= 5);
+      document.getElementById("loopResults").innerHTML = result;
+    }
+
+    let fruits = ["🍎 Táo", "🍌 Chuối", "🍊 Cam"];
+    let student = { name: "An", age: 15, grade: "9A" };
+
+    document.getElementById("arrayObject").innerHTML =
+      `Mảng trái cây: ${fruits.join(", ")} <br> Học sinh: ${JSON.stringify(student)}`;
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD với LocalStorage</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    .add-btn,
+    .update-btn {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .add-btn:hover,
+    .update-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .user-list {
+      margin-top: 15px;
+    }
+
+    .user-item {
+      background: #eef;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 5px;
+    }
+
+    .edit-btn {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: #218838;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>CRUD với LocalStorage</h2>
+    <input type="text" id="name" placeholder="Nhập tên">
+    <input type="email" id="email" placeholder="Nhập email">
+    <button class="add-btn" onclick="addUser()">Thêm người dùng</button>
+    <button class="update-btn" onclick="updateUser()" style="display: none;">Cập nhật</button>
+
+    <div class="user-list" id="userList"></div>
+  </div>
+
+  <script>
+    let editIndex = -1;
+
+    document.addEventListener("DOMContentLoaded", loadUsers);
+
+    function loadUsers() {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      let userList = document.getElementById("userList");
+      userList.innerHTML = "";
+
+      users.forEach((user, index) => {
+        let div = document.createElement("div");
+        div.classList.add("user-item");
+        div.innerHTML = `
+                <span>${user.name} - ${user.email}</span>
+                <div class="btn-group">
+                    <button class="edit-btn" onclick="editUser(${index})">Sửa</button>
+                    <button class="delete-btn" onclick="deleteUser(${index})">Xóa</button>
+                </div>
+            `;
+        userList.appendChild(div);
+      });
+    }
+
+    function addUser() {
+      let name = document.getElementById("name").value.trim();
+      let email = document.getElementById("email").value.trim();
+      if (name === "" || email === "") {
+        alert("Vui lòng nhập đầy đủ thông tin!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      users.push({ name, email });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      loadUsers();
+    }
+
+    function editUser(index) {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      document.getElementById("name").value = users[index].name;
+      document.getElementById("email").value = users[index].email;
+      editIndex = index;
+
+      document.querySelector(".add-btn").style.display = "none";
+      document.querySelector(".update-btn").style.display = "block";
+    }
+
+    function updateUser() {
+      if (editIndex === -1) return;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      users[editIndex].name = document.getElementById("name").value.trim();
+      users[editIndex].email = document.getElementById("email").value.trim();
+      localStorage.setItem("users", JSON.stringify(users));
+
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+      editIndex = -1;
+
+      document.querySelector(".add-btn").style.display = "block";
+      document.querySelector(".update-btn").style.display = "none";
+
+      loadUsers();
+    }
+
+    function deleteUser(index) {
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+      if (confirm("Bạn có chắc chắn muốn xóa?")) {
+        users.splice(index, 1);
+        localStorage.setItem("users", JSON.stringify(users));
+        loadUsers();
+      }
+    }
+  </script>
+
+</body>
+
+</html>
